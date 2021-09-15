@@ -8,29 +8,42 @@
      <link rel="stylesheet" href="{{ asset('css/style.css') }}">
  </head>
  <body>
-     <h1>商品更新フォーム</h1>
-     <!-- 更新先はitemsのidにしないと増える php artisan rote:listで確認① -->
-     <form action="/items/{{ $item->id }}" method="post">
-         @csrf
-         <!-- formタグはPUTやDELETEをサポートしていないため、@ methodで指定する必要がある -->
-         @method('PATCH')
-         <!-- idはそのまま -->
-         <input type="hidden" name="id" value="{{ $item->id }}">
-         <p>
-             <label for="name">商品名</label>
-             <input type="text" name="name" value="{{ $item->name }}">
+
+    @if ($errors->any())
+        <div class="error">
+            <p>
+                <b>{{ count($errors) }}件のエラーがあります。</b>
+            </p>
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+    <h1>商品更新フォーム</h1>
+    <!-- 更新先はitemsのidにしないと増える php artisan rote:listで確認① -->
+    <form action="/items/{{ $item->id }}" method="post">
+        @csrf
+        <!-- formタグはPUTやDELETEをサポートしていないため、@ methodで指定する必要がある -->
+        @method('PATCH')
+        <!-- idはそのまま -->
+        <input type="hidden" name="id" value="{{ $item->id }}">
+        <p>
+            <label for="name">商品名</label>
+            <input type="text" name="name" value="{{ old('name', $item->name) }}">
          </p>
          <p>
              <label for="description">商品詳細</label>
-             <input type="text" name="description" value="{{ $item->description }}">
+             <input type="text" name="description" value="{{ old('description', $item->description) }}">
          </p>
          <p>
              <label for="price">価格</label>
-             <input type="number" name="price" value="{{ $item->price }}">
+            <input type="number" name="price" value="{{ old('price', $item->price) }}">
          </p>
          <p>
              <label for="seller">出品者</label>
-             <input type="text" name="seller" value="{{ $item->seller }}">
+             <input type="text" name="seller" value="{{ old('seller', $item->seller) }}">
          </p>
          <p>
              <label for="seller">電子メール</label>
